@@ -58,32 +58,30 @@ function(req, email, password, done) {
 
         //check if email already exists
 
-        if (user) {
+        if (user)
             return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-            console.log("i encountered an error");
-        }
 
         else {
 
             // if there is no user with that email
             // create the user
-            console.log("im here");
             var newUser            = new User();
 
             newUser.firstname = req.body.firstname;
             newUser.lastname = req.body.lastname;
             newUser.email = email;
-            console.log("passed");
             newUser.password = newUser.generateHash(password);
+            newUser.expenses.monthly.rent = 0;
+            newUser.expesnes.monthly.bills = 0;
+            newUser.expesnes.monthly.transportation = 0;
+            newUser.expenses.yearly.tuition = 0;
+            newUser.expenses.yearly.debt = 0;
 
             newUser.save(function(err) {
                 if (err)
                     throw err;
                 return done(null, newUser);
             });
-
-            console.log("entering done")
-
         }
     });
 }));
