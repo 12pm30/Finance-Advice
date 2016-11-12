@@ -12,7 +12,7 @@ var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var configDB = require('../config/database.js');
 
-//mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(configDB.url); // connect to our database
 
 // set up our express application
 app.use(express.static(__dirname + '/../frontend/public'));
@@ -31,7 +31,9 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-require('./routes/routes.js')(app); // load our routes and pass in our app and fully configured passport
+require('../config/passport')(passport);
+
+require('./routes/routes.js')(app,passport); // load our routes and pass in our app and fully configured passport
 
 app.listen(port, function (err) {
     if(err) throw err;

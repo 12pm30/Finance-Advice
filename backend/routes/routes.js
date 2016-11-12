@@ -1,14 +1,27 @@
-module.exports = function(app){
+module.exports = function(app,passport){
 
     app.get('/', function(req, res){
         res.render('index');
     });
 
     app.get('/login', function(req,res){
-        res.render('login');
+      if (req.isAuthenticated())
+          res.redirect('/');
+      else
+          res.render('login', { message: req.flash('loginMessage') });
     });
 
     app.get('/signup', function(req,res){
         res.render('signup');
     });
+
+    app.post('/login', passport.authenticate('local-login', {
+        successRedirect : '/dashboard',
+        failureRedirect : '/login',
+        failureFlash : true
+    }));
+
+    app.get('/dashboard', function(req,res){
+      res.send('Login successful.... this is the temporary dashboard');
+    })
 }
