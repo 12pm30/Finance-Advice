@@ -1,26 +1,25 @@
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
-// define the schema for our user model
+
+/*var monthly_expense = mongoose.Schema({
+
+  year: Number,
+  rent: Number,
+  bills: Number,
+  transportation: Number,
+
+});*/
+
+
 var userSchema = mongoose.Schema({
 
         firstname    : String,
         lastname     : String,
         email        : String,
-        password     : String,
-        expenses : {
-          monthly: {
-              rent: Number,
-              bills: Number,
-              transportation: Number,
-          },
-          yearly: {
-            tuition: Number,
-            debt: Number
-          }
-        }
+        password     : String
 
-        });
+});
 
 // generating a hash
 userSchema.methods.generateHash = function(password) {

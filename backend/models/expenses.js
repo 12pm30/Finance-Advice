@@ -5,16 +5,11 @@ var bcrypt   = require('bcrypt-nodejs');
 var expenseSchema = mongoose.Schema({
 
         user_id    : {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-        monthly: {
-          rent: Number,
-          bills: Number,
-          transportation: Number,
-        },
-        yearly: {
-          tuition: Number,
-          debt: Number
-        }
-        }
+        type : String,
+        amount: Number,
+        month: Number,
+        year: Number
+
 });
 
 // create the model for users and expose it to our app

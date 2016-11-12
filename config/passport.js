@@ -1,6 +1,8 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('../backend/models/users');
+var Expenses = require('../backend/models/expenses');
+
 
 module.exports = function(passport) {
 
@@ -71,11 +73,19 @@ function(req, email, password, done) {
             newUser.lastname = req.body.lastname;
             newUser.email = email;
             newUser.password = newUser.generateHash(password);
-            newUser.expenses.monthly.rent = 0;
-            newUser.expesnes.monthly.bills = 0;
-            newUser.expesnes.monthly.transportation = 0;
-            newUser.expenses.yearly.tuition = 0;
-            newUser.expenses.yearly.debt = 0;
+          /*  for(var i=0;i<12;i++){
+              console.log(i);
+              newUser.expenses.monthly.push()year = 2016;
+              newUser.expenses.monthly[i].rent = 100;
+              newUser.expesnes.monthly[i].bills = 100;
+              newUser.expesnes.monthly[i].transportation = 100;
+              newUser.expenses.monthly[i];
+            }
+            newUser.expenses.monthly.push(rent=100);
+            newUser.expenses.yearly.tuition = 100;
+            newUser.expenses.yearly.debt = 100;
+            newUser.expenses.yearly.year = 2016;*/
+
 
             newUser.save(function(err) {
                 if (err)
