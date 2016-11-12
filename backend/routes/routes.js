@@ -15,6 +15,12 @@ module.exports = function(app,passport){
         res.render('signup');
     });
 
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/dashboard',
+        failureRedirect : '/signup',
+        failureFlash : true
+    }));
+
     app.post('/login', passport.authenticate('local-login', {
         successRedirect : '/dashboard',
         failureRedirect : '/login',
@@ -23,5 +29,10 @@ module.exports = function(app,passport){
 
     app.get('/dashboard', function(req,res){
       res.send('Login successful.... this is the temporary dashboard');
-    })
+    });
+
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
 }
