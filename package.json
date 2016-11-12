@@ -1,0 +1,23 @@
+{
+  "name": "yhacks",
+  "version": "1.0.0",
+  "description": "yhacks",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wgma00/yhacks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wgma00/yhacks/issues"
+  },
+  "homepage": "https://github.com/wgma00/yhacks#readme"
+}
