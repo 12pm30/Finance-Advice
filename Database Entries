@@ -1,4 +1,4 @@
-USER TABLE      (UserFullName, UserKey, Username, Password);
+USER TABLE      (FirstName, LastName, UserKey, Username, Password);
 TYPE FOR EXP    (TypeKey, TypeName);
 EXPEN           (UserKey, TypeKey, Amount);
 USER BUDGET     (UserKey, BudgetType, BudgetName, Budget);
