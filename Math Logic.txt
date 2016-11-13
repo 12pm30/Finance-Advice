@@ -1,0 +1,27 @@
+Total monthly income = 5000
+budget = 2000
+Savings Intended = 3000
+amount needed to spend 7 months from now = 15000
+
+MY LOGIC: Spend 40% from your savings intended, remaining from budget.
+
+So in this case, in order to pay off the loans in 7 (init) months, you need to save 15000/7 for each month ($2142.8)
+
+To save for this spending per month, use 60% of savings first which is 0.60 * 3000 = 1800
+Remaining is 2142.8 - 1800 = 342.8
+
+Now we have 2 cases: 
+
+1. If the remaining amount is less than 20% of the total budget
+This remaining  will be spent from the budget. So the new budget for the next 7 months will be 2000 - 342.8 = 1657.2
+
+
+2. If the remaining spending would have been more than 20% of total budget,
+Then the user will do the following.
+He will pay 20% of the budget for the number of months which is = (Remaining amount * init months / (20% of the budget)) 
+
+
+ 
+
+
+
