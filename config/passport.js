@@ -18,7 +18,12 @@ module.exports = function(passport) {
 
   passport.deserializeUser(function(user, done){
     console.log(user);
-    connection.query("SELECT * FROM USERS WHERE EMAIL = ? ",[user.EMAIL], function(err, rows){
+    var email;
+    if(user.EMAIL)
+        email=user.EMAIL;
+    else if(user.email)
+        email=user.email;
+    connection.query("SELECT * FROM USERS WHERE EMAIL = ? ",[email], function(err, rows){
       done(err, rows[0]);
     });
   });
