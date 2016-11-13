@@ -75,7 +75,7 @@ function(req, email, password, done) {
         password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
       };
 
-      var insertQuery = "INSERT INTO USERS ( firstname, lastname,email, password ) values (?,?,?,?)";
+      var insertQuery = "INSERT INTO USERS ( FIRSTNAME, LASTNAME,EMAIL, PASSWORD ) values (?,?,?,?)";
 
       connection.query(insertQuery,[newUserMysql.firstname, newUserMysql.lastname, newUserMysql.email, newUserMysql.password],function(err, rows) {
         //newUserMysql.id = rows.insertId;
