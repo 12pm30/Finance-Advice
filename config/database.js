@@ -12,7 +12,7 @@ module.exports = {
         'user': 'root',
         'password': 'new2you!'
     },
-	'database': 'yhacks',
+	'database': 'yhack',
     'users_table': 'USERS',
     'expenses_table': 'BALADJUST',
     'savings_table': 'SAVINGS'

@@ -32,7 +32,7 @@ module.exports = function(passport) {
   },
   function(req ,email, password, done) {
 
-    connection.query("SELECT * FROM users WHERE email = ?",[email], function(err, rows){
+    connection.query("SELECT * FROM USERS WHERE email = ?",[email], function(err, rows){
       if (err)
       return done(err);
       if (!rows.length) {
@@ -60,23 +60,25 @@ passport.use('local-signup', new LocalStrategy({
 },
 function(req, email, password, done) {
 
-  connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
+  connection.query("SELECT * FROM USERS WHERE email = ?",[email], function(err, rows) {
     if (err)
     return done(err);
     if (rows.length) {
-      return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+      return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
     } else {
       // if there is no user with that username
       // create the user
       var newUserMysql = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
         email: email,
         password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
       };
 
-      var insertQuery = "INSERT INTO users ( email, password ) values (?,?)";
+      var insertQuery = "INSERT INTO USERS ( firstname, lastname,email, password ) values (?,?,?,?)";
 
-      connection.query(insertQuery,[newUserMysql.email, newUserMysql.password],function(err, rows) {
-        newUserMysql.id = rows.insertId;
+      connection.query(insertQuery,[newUserMysql.firstname, newUserMysql.lastname, newUserMysql.email, newUserMysql.password],function(err, rows) {
+        //newUserMysql.id = rows.insertId;
 
         return done(null, newUserMysql);
       });
