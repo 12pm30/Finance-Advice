@@ -68,100 +68,32 @@ module.exports = function(app,passport){
 
       if(body.rent!=""){
 
-        var newExpense1 = new Expense();
+        //CREATE NEW EXPENSES ENTRY FOR USER'S RENT
 
-        newExpense1.user_id = userID;
-        newExpense1.type = 'rent';
-        newExpense1.amount= body.rent;
-        newExpense1.month = d.getMonth()+1;
-        newExpense1.year = d.getFullYear();
-
-        newExpense1.save(function(err) {
-            if (err)
-                error=1;
-        });
 
       }
       if(body.bills!=""){
-        var newExpense2 = new Expense();
-        newExpense2.user_id = userID;
-        newExpense2.type = 'bills';
-        newExpense2.amount= body.bills;
-        newExpense2.month = d.getMonth()+1;
-        newExpense2.year = d.getFullYear();
-        newExpense2.save(function(err) {
-            if (err)
-                error=1;
-      });
+
+        //CREATE NEW EXPENSES ENTRY FOR USER'S BILLS
     }
       if(body.tranportation!=""){
-        var newExpense3 = new Expense();
-        newExpense3.user_id = userID;
-        newExpense3.type = 'transportation';
-        newExpense3.amount= body.transportation;
-        newExpense3.month = d.getMonth()+1;
-        newExpense3.year = d.getFullYear();
-        newExpense3.save(function(err) {
-            if (err)
-                error=1;
-      });
+
+        //CREATE NEW EXPENSES ENTRY FOR USER'S transportation
+
     }
       if(body.tuition!=""){
+        //CREATE NEW EXPENSES ENTRY FOR USER'S TUITION
         var newExpense4 = new Expense();
-        newExpense4.user_id = userID;
-        newExpense4.type = 'tuition';
-        newExpense4.amount= body.tuition;
-        newExpense4.month = null;
-        newExpense4.year = d.getFullYear();
-        newExpense4.save(function(err) {
-            if (err)
-                error=1;
-      });
+
     }
       if(body.debt!=""){
-        var newExpense5 = new Expense();
-        newExpense5.user_id = userID;
-        newExpense5.type = 'debt';
-        newExpense5.amount= body.debt;
-        newExpense5.month = null;
-        newExpense5.year = d.getFullYear();
-        newExpense5.save(function(err) {
-            if (err)
-                error=1;
-      });
+        //CREATE NEW EXPENSES ENTRY FOR USER'S DEBT
+
     }
 
-          if (error==1)
-              console.log('didnt save');
-          else
-            res.redirect('/dashboard');
+//IF successful then uncomment the line below else display error
+// res.render('dashboard');
 
-
-
-/*      Expense.findOne({ 'user_id' :  userID }, function(err, user) {
-
-          var body = req.body;
-          console.log(body);
-          console.log(current);
-          if(body.rent!="")
-              current.monthly.rent = body.rent;
-          if(body.bills!="")
-              current.monthly.bills = body.bills;
-          if(body.tranporttion!="")
-              current.monthly.transportation=body.transportation;
-          if(body.tuition!="")
-              current.yearly.tuition=body.tuition;
-          if(body.debt!="")
-              current.yearly.debt=body.debt;
-
-          current.save(function(err) {
-              if (err)
-                  console.log('didnt save');
-              else
-                res.redirect('/dashboard');
-          });
-
-      });*/
 
     })
 }

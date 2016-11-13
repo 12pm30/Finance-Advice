@@ -1,19 +1,25 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var User = require('../backend/models/users');
-var Expenses = require('../backend/models/expenses');
+var mysql = require('mysql');
+var dbconfig = require('./database');
+var connection = mysql.createConnection(dbconfig.connection);
+connection.query('USE ' + dbconfig.database);
+
+//var User = require('../backend/models/users');
+//var Expenses = require('../backend/models/expenses');
 
 
 module.exports = function(passport) {
 
   //This will serialize and deserialize
   passport.serializeUser(function(user, done) {
-    done(null, user._id);
+    done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done){
-    User.findById(id, function(err, user){
-      done(err, user);
+
+    connection.query("SELECT * FROM users WHERE id = ? ",[id], function(err, rows){
+      done(err, rows[0]);
     });
   });
 
@@ -25,17 +31,20 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req ,email, password, done) {
-    User.findOne({ email: email }, function(err, user){
-      if(err) return done(err);
 
-      if(!user){
-        return done(null, false, req.flash('loginMessage', 'User does not exist! Create an account now!'));
+    connection.query("SELECT * FROM users WHERE email = ?",[email], function(err, rows){
+      if (err)
+      return done(err);
+      if (!rows.length) {
+        return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
       }
 
-      if(!user.validPassword(password)){
-        return done(null, false, req.flash('loginMessage', 'Incorrect username or password'));
-      }
-      return done(null, user);
+      // if the user is found but the password is wrong
+      if (!bcrypt.compareSync(password, rows[0].password))
+      return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+
+      // all is well, return successful user
+      return done(null, rows[0]);
     });
   }
 
@@ -45,63 +54,41 @@ module.exports = function(passport) {
 
 passport.use('local-signup', new LocalStrategy({
 
-    usernameField : 'email',
-    passwordField : 'password',
-    passReqToCallback : true
+  usernameField : 'email',
+  passwordField : 'password',
+  passReqToCallback : true
 },
 function(req, email, password, done) {
 
-    User.findOne({ 'email' :  email }, function(err, user) {
+  connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
+    if (err)
+    return done(err);
+    if (rows.length) {
+      return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+    } else {
+      // if there is no user with that username
+      // create the user
+      var newUserMysql = {
+        email: email,
+        password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+      };
 
-      console.log("im routing");
+      var insertQuery = "INSERT INTO users ( email, password ) values (?,?)";
 
-        if (err)
-            return done(err);
+      connection.query(insertQuery,[newUserMysql.email, newUserMysql.password],function(err, rows) {
+        newUserMysql.id = rows.insertId;
 
-        //check if email already exists
+        return done(null, newUserMysql);
+      });
+    };
+  })
+} ) );
 
-        if (user)
-            return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-
-        else {
-
-            // if there is no user with that email
-            // create the user
-            var newUser            = new User();
-
-            newUser.firstname = req.body.firstname;
-            newUser.lastname = req.body.lastname;
-            newUser.email = email;
-            newUser.password = newUser.generateHash(password);
-          /*  for(var i=0;i<12;i++){
-              console.log(i);
-              newUser.expenses.monthly.push()year = 2016;
-              newUser.expenses.monthly[i].rent = 100;
-              newUser.expesnes.monthly[i].bills = 100;
-              newUser.expesnes.monthly[i].transportation = 100;
-              newUser.expenses.monthly[i];
-            }
-            newUser.expenses.monthly.push(rent=100);
-            newUser.expenses.yearly.tuition = 100;
-            newUser.expenses.yearly.debt = 100;
-            newUser.expenses.yearly.year = 2016;*/
-
-
-            newUser.save(function(err) {
-                if (err)
-                    throw err;
-                return done(null, newUser);
-            });
-        }
-    });
-}));
-
-
-//Custom validator function
-exports.isAuthenticated = function(req, res, next) {
-  if(req.isAuthenticated()){
-    return next();
+  //Custom validator function
+  exports.isAuthenticated = function(req, res, next) {
+    if(req.isAuthenticated()){
+      return next();
+    }
+    res.redirect('/login');
   }
-  res.redirect('/login');
-}
 };
