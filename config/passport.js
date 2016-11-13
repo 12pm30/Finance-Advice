@@ -17,7 +17,6 @@ module.exports = function(passport) {
   });
 
   passport.deserializeUser(function(user, done){
-    console.log(user);
     var email;
     if(user.EMAIL)
         email=user.EMAIL;

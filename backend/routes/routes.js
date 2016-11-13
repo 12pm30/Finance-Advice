@@ -1,5 +1,8 @@
 module.exports = function(app,passport){
-
+var mysql = require('mysql');
+    var dbconfig = require('../../config/database');
+        var connection = mysql.createConnection(dbconfig.connection);
+connection.query('USE ' + dbconfig.database);
 
     app.get('/', function(req, res){
         res.render('index');
@@ -40,10 +43,16 @@ module.exports = function(app,passport){
 
     //dashboard
 
-    app.get('/dashboard',isLoggedIn, function(req,res){
-      res.render('dashboard',{ user : req.user});
-    });
+app.get('/dashboard',isLoggedIn, function(req,res){
 
+          connection.query("SELECT * FROM BALADJUST WHERE UID = ? ",[req.user.UID], function(err, rows){
+              
+                      if(!rows.length)
+                                    res.render('dashboard',{user:req.user, message:'no_data'});
+                              else 
+                                            res.render('dashboard',{user: req.user, message:'data',data:rows});
+                                            });
+                                      });
     //expenses
 
     app.get('/expenses', isLoggedIn, function(req,res){

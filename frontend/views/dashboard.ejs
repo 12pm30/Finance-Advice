@@ -23,8 +23,7 @@
           <a class="navbar-brand" href="/">Yhacks Money</a>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="/expenses">My expenses</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -32,8 +31,54 @@
         </ul>
       </div>
     </nav>
-    <p> Here goes all your estimations and budget data </p>
-
+<h1 style="text-align:center; color:blue;">Dashboard </h1>
+<br>
+<h2 style="text-align:center; color:red;">Expenses</h2>
+<hr>
+<div class="row">
+<div class="col-sm-4">
+<table class="table table-bordered">
+<caption style="text-align:center;"> Current Month </caption>
+    <thead>
+      <tr>
+        <th>TYPE</th>
+        <th>COST</th>
+      </tr>
+    </thead>
+    <tbody>
+<% for(var i=0; i<data.length; i++) {
+if(data[i].MONTH!=null){ %>
+      <tr>
+        <td><%=data[i].TYPE%></td>
+        <td><%=data[i].AMOUNT%></td>
+      </tr>
+<%}}%>    
+</tbody>
+  </table>
+</div>
+<div class="col-sm-4">
+    <table class="table table-bordered">                                            
+      <caption style="text-align:center;"> Current Year </caption>                         
+      <thead>                                                                     
+        <tr>                                                                      
+          <th>TYPE</th>                                                           
+          <th>COST</th>                                                           
+        </tr>                                   
+      </thead>                                                                    
+      <tbody>                                                                     
+        <% for(var i=0; i<data.length; i++) {
+            if(data[i].MONTH==null){%>                                         
+          <tr>                                                                      
+            <td><%=data[i].TYPE%></td>                                              
+            <td><%=data[i].AMOUNT%></td>                                            
+          </tr>                                                                     
+          <%}}%>                                                                           
+        </tbody>                                                                        
+      </table> 
+</div>
+<div class="col-sm-4"></div>
+//PIE CHART GOES HERE
+</div>
   </div>
   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
