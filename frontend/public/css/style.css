@@ -64,9 +64,9 @@ input::-webkit-input-placeholder {
 .login-button{
 	margin-top: 5px;
 }
-
-.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 70%;
-      margin: auto;
-  }
+.home-img {
+      width:100%;
+        height:100%;
+            background-image:url('../moneymanagement.jpg');
+        background-size:contain;  
+        }
