@@ -13,12 +13,12 @@ module.exports = function(passport) {
 
   //This will serialize and deserialize
   passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user);
   });
 
-  passport.deserializeUser(function(id, done){
-
-    connection.query("SELECT * FROM users WHERE id = ? ",[id], function(err, rows){
+  passport.deserializeUser(function(user, done){
+    console.log(user);
+    connection.query("SELECT * FROM USERS WHERE EMAIL = ? ",[user.EMAIL], function(err, rows){
       done(err, rows[0]);
     });
   });
@@ -40,7 +40,7 @@ module.exports = function(passport) {
       }
 
       // if the user is found but the password is wrong
-      if (!bcrypt.compareSync(password, rows[0].password))
+      if (password!=rows[0].PASSWORD)
       return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
       // all is well, return successful user
@@ -72,7 +72,7 @@ function(req, email, password, done) {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: email,
-        password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+        password: password  // use the generateHash function in our user model
       };
 
       var insertQuery = "INSERT INTO USERS ( FIRSTNAME, LASTNAME,EMAIL, PASSWORD ) values (?,?,?,?)";

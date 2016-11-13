@@ -51,52 +51,55 @@ module.exports = function(app,passport){
     });
 
     app.post('/expenses', function(req,res){
-
-      var User = require('../models/users');
-      var Expense = require('../models/expenses');
-      var userID = req.user._id;
+    var connection = mysql.createConnection(dbconfig.connection);
+    connection.query('USE ' + dbconfig.database);
+      //var User = require('../models/users');
+      //var Expense = require('../models/expenses');
+      var userID = req.user.UID;
       var body =req.body;
       var now = Date.now();
       var d = new Date(now);
-      var date = d.getDate() + '-' + (d.getMonth()+1) +  '-' + d.getFullYear();
 
       var error = 0;
 
       var newExpense = new Expense();
+      var insertQuery = "INSERT INTO BALADJUST (UID, AMOUNT, APPLIED, YEAR,MONTH,TYPE ) values (?,?,?,?,?,?)";
+
+connection.query(insertQuery,[newUserMysql.firstname, newUserMysql.lastname, newUserMysql.email, newUserMysql.password],function(err, rows) {
 
       console.log(body);
-
+      var valuesQuer=")";
       if(body.rent!=""){
 
         //CREATE NEW EXPENSES ENTRY FOR USER'S RENT
-
+        connection.query(insetQuery,[userID, body.rent, true, d.getFullYear(),d.getMonth(),'RENT']);
 
       }
       if(body.bills!=""){
 
         //CREATE NEW EXPENSES ENTRY FOR USER'S BILLS
+        connection.query(insetQuery,[userID, body.bills, true, d.getFullYear(),d.getMonth(),'BILLS']); 
     }
-      if(body.tranportation!=""){
+      if(body.transportation!=""){
 
         //CREATE NEW EXPENSES ENTRY FOR USER'S transportation
+        connection.query(insetQuery,[userID, body.transportation, true, d.getFullYear(),d.getMonth(),'TRANSPORTATION']); 
 
     }
       if(body.tuition!=""){
         //CREATE NEW EXPENSES ENTRY FOR USER'S TUITION
-        var newExpense4 = new Expense();
+        connection.query(insetQuery,[userID, body.tuition, true, d.getFullYear(),null,'TUITION']); 
 
     }
       if(body.debt!=""){
         //CREATE NEW EXPENSES ENTRY FOR USER'S DEBT
-
+connection.query(insetQuery,[userID, body.debt, true, d.getFullYear(),null,'DEBT']); 
     }
 
 //IF successful then uncomment the line below else display error
-// res.render('dashboard');
-
+ res.render('dashboard');
 
     })
-}
 
 function isLoggedIn(req, res, next) {
 
