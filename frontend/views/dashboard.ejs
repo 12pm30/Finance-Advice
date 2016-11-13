@@ -12,7 +12,7 @@
 	<!-- Google Fonts -->
 	<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
-  <title>Dashboard</title>
+  <title style="color: white;">Dashboard</title>
 </head>
 
 <body>
@@ -85,28 +85,42 @@ for(var i=0; i<data.length; i++) {
 <div class="row">
 <h2>Expenses Bar Chart</h2>
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-    <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
-    <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
-    <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+    <li class="active"><a data-toggle="tab" href="#home">Food</a></li>
+    <li><a data-toggle="tab" href="#menu1">Rent</a></li>
+    <li><a data-toggle="tab" href="#menu2">Bills</a></li>
+    <li><a data-toggle="tab" href="#menu3">Transportation</a></li>
   </ul>
-
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-      <h3>HOME</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    </div>
-    <div id="menu1" class="tab-pane fade">
-      <h3>Menu 1</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
+      <h3>Food</h3>
+<div class="wrapper">
+  <p>Here lies the monthly expenditure for food </p>
+  <div id="chart"></div>  
+</div>
+</div>
+    <div id="menu1" class="tab-pane fade active">
+      <h3>Rent</h3>
+<div class="wrapper">
+  <h1>Dynamically generated 3D bar chart</h1>
+  <p>Add values to the javascript array to edit the chart</p>
+  <div id="chart"></div>  
+</div>
+</div>
     <div id="menu2" class="tab-pane fade">
-      <h3>Menu 2</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+      <h3>Bill</h3>
+        <div class="wrapper">
+          <h1>Dynamically generated 3D bar chart</h1>
+          <p>Add values to the javascript array to edit the chart</p>
+          <div id="chart"></div>  
+        </div>
     </div>
     <div id="menu3" class="tab-pane fade">
-      <h3>Menu 3</h3>
-      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+      <h3>Transporation</h3>
+        <div class="wrapper">
+          <h1>Dynamically generated 3D bar chart</h1>
+          <p>Add values to the javascript array to edit the chart</p>
+          <div id="chart"></div>  
+        </div>
     </div>
   </div>
 
@@ -114,6 +128,64 @@ for(var i=0; i<data.length; i++) {
 
 </div>
   </div>
-  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>  
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+/* Inspired by : http://codepen.io/obc/pen/ypDmg */
+/* Te iubesc pisoi */
+/* @_tomesch */
+
+// Add values to the values array and see what happens :)
+var values = [500,300,340,290];
+
+drawChart(values,"#chart",10) // You can adjust the margin between each bar by changing 10 to whatever you like
+
+function drawChart(data,selector,padding){
+  var max = Math.max.apply(Math, data);
+    var chart = document.querySelector(selector);
+    var barwidth = ((chart.offsetWidth-(values.length-1)*padding-(data.length)*10)/data.length);
+    var sum = data.reduce(function(pv, cv) { return pv + cv; }, 0);
+    var left = 0;
+    for (var i in data){
+      var newbar = document.createElement('div');
+      newbar.setAttribute("class", "bar");
+      newbar.style.width=barwidth+"px";
+      newbar.style.height=((data[i]/max)*100)+"%";
+      newbar.style.left=left+"px";
+      chart.appendChild(newbar);
+      left += (barwidth+padding+10);
+    }
+}
+</script>
+<script>$(document).ready(function() {
+  $.getScript('http://www.chartjs.org/assets/Chart.js',function(){
+      var data = {
+          labels : [test,"February","March","April","May","June","July"],
+          datasets : [
+              {
+                  fillColor : "rgba(220,220,220,0.5)",
+                  strokeColor : "rgba(220,220,220,1)",
+                  pointColor : "rgba(220,220,220,1)",
+                  pointStrokeColor : "#fff",
+                  data : [65,59,90,81,56,55,40]
+              },
+
+          ]
+      }
+  
+      var options = {
+          animation: true
+      };
+  
+      //Get the context of the canvas element we want to select
+      var c = $('#myChart');
+      var ct = c.get(0).getContext('2d');
+      var ctx = document.getElementById("myChart").getContext("2d");
+      /*********************/
+      new Chart(ctx).Bar(data,options);
+  
+  })
+});
+
 </body>
 </html>
