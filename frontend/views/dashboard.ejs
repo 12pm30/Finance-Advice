@@ -24,10 +24,10 @@
         </div>
         <ul class="nav navbar-nav">
           <li><a href="/">Home</a></li>
-          <li><a href="/expenses">My expenses</a></li>
+          <li><a href="/expenses"> expenses</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+          <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
       </div>
     </nav>
@@ -41,12 +41,12 @@
 <caption style="text-align:center;"> Current Month </caption>
     <thead>
       <tr>
-        <th>TYPE</th>
-        <th>COST</th>
+        <th style="color:green;">TYPE</th>
+        <th style="color:green;">COST</th>
       </tr>
     </thead>
     <tbody>
-<% if(message == "data") {
+<%if(message == "data") {
 
 for(var i=0; i<data.length; i++) {
 if(data[i].MONTH!=null){ %>
@@ -63,8 +63,8 @@ if(data[i].MONTH!=null){ %>
       <caption style="text-align:center;"> Current Year </caption>                         
       <thead>                                                                     
         <tr>                                                                      
-          <th>TYPE</th>                                                           
-          <th>COST</th>                                                           
+          <th style="color:green;">TYPE</th>                                                           
+          <th style="color:green;">COST</th>                                                           
         </tr>                                   
       </thead>                                                                    
       <tbody>                                                                     
@@ -80,48 +80,33 @@ for(var i=0; i<data.length; i++) {
       </table> 
 </div>
 <div class="col-sm-4"></div>
-//PIE CHART GOES HERE
+//SAMPLE PIE CHART
+<img src="http://cdn2.mydollarplan.com/wp-content/uploads/2011/02/Pie-Chart.jpg" width="300" height="300">
 </div>
 <div class="row">
 <h2>Expenses Bar Chart</h2>
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">Food</a></li>
+    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
     <li><a data-toggle="tab" href="#menu1">Rent</a></li>
     <li><a data-toggle="tab" href="#menu2">Bills</a></li>
     <li><a data-toggle="tab" href="#menu3">Transportation</a></li>
   </ul>
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-      <h3>Food</h3>
-<div class="wrapper">
-  <p>Here lies the monthly expenditure for food </p>
-  <div id="chart"></div>  
-</div>
+  <h4>Click on the tabs to view your expense trend over the months</h4>
 </div>
     <div id="menu1" class="tab-pane fade active">
       <h3>Rent</h3>
-<div class="wrapper">
-  <h1>Dynamically generated 3D bar chart</h1>
-  <p>Add values to the javascript array to edit the chart</p>
-  <div id="chart"></div>  
+<canvas id="myChart" width="400" height="200" class="well"></canvas>
 </div>
-</div>
-    <div id="menu2" class="tab-pane fade">
+    <div id="menu2" class="tab-pane fade active">
       <h3>Bill</h3>
-        <div class="wrapper">
-          <h1>Dynamically generated 3D bar chart</h1>
-          <p>Add values to the javascript array to edit the chart</p>
-          <div id="chart"></div>  
-        </div>
-    </div>
-    <div id="menu3" class="tab-pane fade">
+<canvas id="myChart1" width="400" height="200" class="well"></canvas>    
+</div>
+    <div id="menu3" class="tab-pane fade active">
       <h3>Transporation</h3>
-        <div class="wrapper">
-          <h1>Dynamically generated 3D bar chart</h1>
-          <p>Add values to the javascript array to edit the chart</p>
-          <div id="chart"></div>  
-        </div>
-    </div>
+<canvas id="myChart2" width="400" height="200" class="well"></canvas>
+</div>
   </div>
 
 
@@ -160,14 +145,14 @@ function drawChart(data,selector,padding){
 <script>$(document).ready(function() {
   $.getScript('http://www.chartjs.org/assets/Chart.js',function(){
       var data = {
-          labels : [test,"February","March","April","May","June","July"],
+          labels : ["January","February","March","April","May","June","July"],
           datasets : [
               {
                   fillColor : "rgba(220,220,220,0.5)",
                   strokeColor : "rgba(220,220,220,1)",
                   pointColor : "rgba(220,220,220,1)",
                   pointStrokeColor : "#fff",
-                  data : [65,59,90,81,56,55,40]
+                  data : [950,950,900,900,900,1000,1000]
               },
 
           ]
@@ -186,6 +171,71 @@ function drawChart(data,selector,padding){
   
   })
 });
+</script>
+<script>
+$(document).ready(function() {
+  $.getScript('http://www.chartjs.org/assets/Chart.js',function(){
+    
+      var data = {
+          labels : ["January","February","March","April","May","June","July"],
+          datasets : [
 
+              {
+                  fillColor : "rgba(151,187,205,0.5)",
+                  strokeColor : "rgba(151,187,205,1)",
+                  pointColor : "rgba(151,187,205,1)",
+                  pointStrokeColor : "#fff",
+                  data : [500,480,400,200,500,320,400]
+              }
+          ]
+      }
+  
+      var options = {
+          animation: true
+      };
+  
+      //Get the context of the canvas element we want to select
+      var c = $('#myChart1');
+      var ct = c.get(0).getContext('2d');
+      var ctx = document.getElementById("myChart1").getContext("2d");
+      /*********************/
+      new Chart(ctx).Bar(data,options);
+  
+  })
+});
+
+</script>
+<script>
+$(document).ready(function() {
+  $.getScript('http://www.chartjs.org/assets/Chart.js',function(){
+    
+      var data = {
+          labels : ["January","February","March","April","May","June","July"],
+          datasets : [
+
+              {
+                  fillColor : "red",
+                  strokeColor : "rgba(151,187,205,1)",
+                  pointColor : "rgba(151,187,205,1)",
+                  pointStrokeColor : "#fff",
+                  data : [89,100,320,100,0,140,200]
+              }
+          ]
+      }
+  
+      var options = {
+          animation: true
+      };
+  
+      //Get the context of the canvas element we want to select
+      var c = $('#myChart2');
+      var ct = c.get(0).getContext('2d');
+      var ctx = document.getElementById("myChart2").getContext("2d");
+      /*********************/
+      new Chart(ctx).Bar(data,options);
+  
+  })
+});
+</script>
 </body>
 </html>

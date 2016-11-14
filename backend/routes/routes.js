@@ -5,7 +5,7 @@ var mysql = require('mysql');
 connection.query('USE ' + dbconfig.database);
 
     app.get('/', function(req, res){
-        res.render('index');
+        res.render('index', {user:req.user});
     });
 
     //LOGIN
@@ -97,7 +97,7 @@ connection.query(insertQuery,[userID, body.debt, true, d.getFullYear(),null,'DEB
     }
 
 //IF successful then uncomment the line below else display error
- res.render('dashboard');
+ res.redirect('/dashboard');
 
     })
 
